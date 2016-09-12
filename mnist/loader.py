@@ -49,6 +49,9 @@ class MNIST(object):
 
         with open(path_img, 'rb') as file:
             magic, size, rows, cols = struct.unpack(">IIII", file.read(16))
+            print 'struct.pack("IIII", 1, 2, 3, 4)'
+            print struct.pack("IIII", 1, 2, 3, 4)
+            print 'struct.pack("IIII", 1, 2, 3, 4)'
             if magic != 2051:
                 raise ValueError('Magic number mismatch, expected 2051,'
                                  'got {}'.format(magic))

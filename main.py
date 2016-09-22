@@ -143,13 +143,15 @@ def packImages(images, labels, width=28, magic_num=2051):
 	rows = len(images[0])/cols
 	lengthOfTheWholeThing=7
 	packed = ""
-	#packed = packed + str(lengthOfTheWholeThing) + ","
-	#packed = packed + str(len(images[0])) + ","
-	#for i in range(len(images[0])):
+	topCount = 4
+	packed = packed + str(lengthOfTheWholeThing) + ","
+	packed = packed + str(topCount) + ","
+	#for i in range(topCount):
 	#	packed = packed + "p"+str(i)+","
 		
-	#packed = packed + "boolVal"
-	#packed = packed + "\n"
+	packed = packed + "True,"
+	packed = packed + "False"
+	packed = packed + "\n"
 
 	for i in range(len(images)):
 		image = images[i]
@@ -157,6 +159,8 @@ def packImages(images, labels, width=28, magic_num=2051):
 		for val in image:
 			count += 1
 			packed = packed + str(val) + ".0,"
+			if count >= topCount:
+				break;
 		labelValue = 1 if labels[i] else 0
 		packed = packed + str(labelValue)
 		

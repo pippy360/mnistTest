@@ -141,9 +141,9 @@ def packImages(images, labels, width=28, magic_num=2051):
 	size = len(images)
 	cols = width
 	rows = len(images[0])/cols
-	lengthOfTheWholeThing=1000
+	lengthOfTheWholeThing=3000
 	packed = ""
-	topCount = 1568#len(images[0])
+	topCount = 4#len(images[0])
 	packed = packed + str(lengthOfTheWholeThing) + ","
 	packed = packed + str(topCount) + ","
 	#for i in range(topCount):
@@ -160,7 +160,7 @@ def packImages(images, labels, width=28, magic_num=2051):
 		packed = packed + ('.0,'.join(map(str, vals)))
 		print len(vals)
 		labelValue = 1 if labels[i] else 0
-		packed = packed + str(labelValue)
+		packed = packed + ',' + str(labelValue)
 		
 		if i >= lengthOfTheWholeThing-1:
 			break	

@@ -5,11 +5,11 @@ from random import randint
 
 def start(path='./data'):
 
-#	test_img_fname = 't10k-images-idx3-ubyte'
-#	test_lbl_fname = 't10k-labels-idx1-ubyte'
+	test_img_fname = 't10k-images-idx3-ubyte'
+	test_lbl_fname = 't10k-labels-idx1-ubyte'
 
-	test_img_fname = 'img_1'
-	test_lbl_fname = 'label_1'
+#	test_img_fname = 'img_1'
+#	test_lbl_fname = 'label_1'
 
 	train_img_fname = 'train-images-idx3-ubyte'
 	train_lbl_fname = 'train-labels-idx1-ubyte'
@@ -20,16 +20,26 @@ def start(path='./data'):
 	org_train_images = []
 	org_train_labels = []
 
-	org_test_images, org_test_labels = load_wrapper(path, test_img_fname, test_lbl_fname)
+	org_test_images, org_test_labels = load_wrapper(path, train_img_fname, train_lbl_fname)	
+	org_test_images, org_test_labels = mixThem_random(org_test_images, org_test_labels)
+	fin_images = packOurNewData(org_test_labels, org_test_images)
+	#print fin_images
+	text_file = open("train_mixed_numbers_data.csv", "w+")
+	text_file.write(fin_images)
+	text_file.close()
+	#org_test_images, org_test_labels = load_wrapper(path, train_img_fname, train_lbl_fname)
 
-#	org_test_images, org_test_labels = mixThem_random(org_test_images, org_test_labels)
 
+	org_test_images, org_test_labels = load_wrapper(path, test_img_fname, test_lbl_fname)	
+	org_test_images, org_test_labels = mixThem_random(org_test_images, org_test_labels)
+	fin_images = packOurNewData(org_test_labels, org_test_images)
+	#print fin_images
+	text_file = open("test_mixed_numbers_data.csv", "w+")
+	text_file.write(fin_images)
+	text_file.close()
 	#print org_test_images[0]
-	print display(org_test_images[0])
 #	print junk[0]
 #	print displayNumOfTrueOrFalse(junk)
-
-	fin_labels, fin_images = packOurNewData(org_test_labels, org_test_images)
 
 #	saveThemToFile(('label_1', fin_labels), ('img_1', fin_images))
 
@@ -126,57 +136,38 @@ def displayNumOfTrueOrFalse(inputBoolArr):
 
 
 #returns byte array
-def packImages(images, width=28, magic_num=2051):
+def packImages(images, labels, width=28, magic_num=2051):
 	ret = []
 	size = len(images)
 	cols = width
 	rows = len(images[0])/cols
+	lengthOfTheWholeThing=7
+	packed = ""
+	#packed = packed + str(lengthOfTheWholeThing) + ","
+	#packed = packed + str(len(images[0])) + ","
+	#for i in range(len(images[0])):
+	#	packed = packed + "p"+str(i)+","
+		
+	#packed = packed + "boolVal"
+	#packed = packed + "\n"
 
- 	packed = struct.pack(">IIII", magic_num, size, rows, cols)
+	for i in range(len(images)):
+		image = images[i]
+		count = 0
+		for val in image:
+			count += 1
+			packed = packed + str(val) + ".0,"
+		labelValue = 1 if labels[i] else 0
+		packed = packed + str(labelValue)
+		
+		if i > lengthOfTheWholeThing:
+			break	
+		packed = packed + "\n"
 	
- 	for byte in packed:
- 		ret.append(byte)
-
-	for image in images:
-		ret.extend(image)
-
-	return ret
-
-
-
-#returns byte array
-def packLabels(labels, magic_num=2049):
-	ret = []
-	size = len(labels)
-
- 	packed = struct.pack(">II", magic_num, size)
-
- 	for byte in packed:
- 		ret.append(byte)
-
-	for label in labels:
-		ret.append(label)
-
-	return ret
+	return packed
 
 
 def packOurNewData(labels, images):
-	fin_images = packImages(images)
-	fin_labels = packLabels(labels)
-	return fin_labels, fin_images
-
-def saveThemToFile(labels_tup, images_tup):
-	saveToFile(labels_tup)
-	saveToFile(images_tup)
-
-def saveToFile(tup):
-	#print tup
-	name, byteArr = tup
-
-	f = open('./data/'+name, 'w+')
-	for byte in bytearray(byteArr):
-		bigEndByte = struct.pack(">B", byte)
-		f.write(bigEndByte)
-	f.close()
+	return packImages(images, labels)
 
 start()

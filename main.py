@@ -25,7 +25,7 @@ def start(path='./data'):
 	fin_images = packOurNewData(org_test_labels, org_test_images)
 	#print fin_images
 	text_file = open("train_mixed_numbers_data.csv", "w+")
-	text_file.write(fin_images)
+	text_file.write(fin_images+'\n')
 	text_file.close()
 	#org_test_images, org_test_labels = load_wrapper(path, train_img_fname, train_lbl_fname)
 
@@ -35,7 +35,7 @@ def start(path='./data'):
 	fin_images = packOurNewData(org_test_labels, org_test_images)
 	#print fin_images
 	text_file = open("test_mixed_numbers_data.csv", "w+")
-	text_file.write(fin_images)
+	text_file.write(fin_images+'\n')
 	text_file.close()
 	#print org_test_images[0]
 #	print junk[0]
@@ -141,9 +141,9 @@ def packImages(images, labels, width=28, magic_num=2051):
 	size = len(images)
 	cols = width
 	rows = len(images[0])/cols
-	lengthOfTheWholeThing=7
+	lengthOfTheWholeThing=1000
 	packed = ""
-	topCount = 4
+	topCount = 1568#len(images[0])
 	packed = packed + str(lengthOfTheWholeThing) + ","
 	packed = packed + str(topCount) + ","
 	#for i in range(topCount):
@@ -156,15 +156,13 @@ def packImages(images, labels, width=28, magic_num=2051):
 	for i in range(len(images)):
 		image = images[i]
 		count = 0
-		for val in image:
-			count += 1
-			packed = packed + str(val) + ".0,"
-			if count >= topCount:
-				break;
+		vals = image[:topCount]
+		packed = packed + ('.0,'.join(map(str, vals)))
+		print len(vals)
 		labelValue = 1 if labels[i] else 0
 		packed = packed + str(labelValue)
 		
-		if i > lengthOfTheWholeThing:
+		if i >= lengthOfTheWholeThing-1:
 			break	
 		packed = packed + "\n"
 	

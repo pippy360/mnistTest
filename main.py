@@ -155,7 +155,7 @@ def packImages(images, labels, width=28, magic_num=2051):
 	rows = len(images[0])/cols
 	lengthOfTheWholeThing=3000
 	packed = ""
-	topCount = 4#len(images[0])
+	topCount = 1568#len(images[0])
 	packed = packed + str(lengthOfTheWholeThing) + ","
 	packed = packed + str(topCount) + ","
 	#for i in range(topCount):

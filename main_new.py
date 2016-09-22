@@ -2,8 +2,8 @@ from numpy import genfromtxt
 from random import randint
 
 def main():
-	filename = "output.txt"
-	my_data = genfromtxt(filename, delimiter=',')
+	filename = "test_mixed_numbers_data.csv"
+	my_data = genfromtxt(filename, delimiter=',', skip_header=1)
 	lineIdx = randint(0,len(my_data)-1)
 	line = my_data[lineIdx]
 	print len(line)

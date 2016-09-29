@@ -41,8 +41,8 @@ def buildAndTestTheNN():
 def loadNN():
 	classifier = tf.contrib.learn.DNNClassifier(
                                             feature_columns=feature_columns,
-                                            hidden_units=[10, 20, 10])
-	classifier.restore(path_to_nn)
+                                            hidden_units=[10, 20, 10],
+						model_dir=path_to_nn)
 
 def testTheNN(theNN):
 	# Evaluate accuracy.
@@ -65,8 +65,8 @@ def buildTheNN():
 	# Build 3 layer DNN with 10, 20, 10 units respectively.
 	classifier = tf.contrib.learn.DNNClassifier(
                                             feature_columns=feature_columns,
-                                            hidden_units=[10, 20, 10])
-	classifier.save(path_to_nn)
+                                            hidden_units=[10, 20, 10],
+						model_dir=path_to_nn)
 	# Fit model.
 	classifier.fit(x=training_set.data, 
                y=training_set.target, 

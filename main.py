@@ -31,7 +31,7 @@ def start(path='./data'):
 
 
 	org_test_images, org_test_labels = load_wrapper(path, test_img_fname, test_lbl_fname)	
-	org_test_images, org_test_labels = mixThem_random(org_test_images, org_test_labels, validInts=[0,1,2,3,4,5,6,7,8,9])
+	org_test_images, org_test_labels = mixThem_random(org_test_images, org_test_labels, validInts=[5,6,7,8,9])
 	fin_images = packOurNewData(org_test_labels, org_test_images)
 	#print fin_images
 	text_file = open("test_mixed_numbers_data.csv", "w+")
@@ -114,14 +114,17 @@ def mixThem_random(images, labels, validInts, num=9999):
 
 	for i in range(num):
 
-		idx1 = randint(0,len(images)-1)
-		idx2 = randint(0,len(images)-1)
+		idx1 = randint(0,len(validInts)-1)
+		idx1 = validInts[idx1]
+		idx2 = randint(0,len(validInts)-1)
+		idx2 = validInts[idx2]
 		
-		while not isValidInt(labels[idx1], validInts):
-			idx1 = randint(0,len(images)-1)
-
-		while not isValidInt(labels[idx2], validInts):
-			idx2 = randint(0,len(images)-1)
+		isItTrue = randint(0,1) == 1 
+		
+		if isItTrue:	
+			while not labels[idx1] == labels[idx2]:
+				idx2 = randint(0,len(validInts)-1)
+				idx2 = validInts[idx2]
 
 		tempImg = images[idx1][:]
 		tempImg.extend(images[idx2])

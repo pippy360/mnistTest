@@ -31,7 +31,7 @@ def does_it_match(singleSample):
 	new_samples = np.array(    [singleSample], dtype=float)
 	y = g_theNN.predict(new_samples)
 	print('Predictions: {}'.format(str(y)))
-
+	return y == 1
 
 def buildAndTestTheNN():
 	theNN = buildTheNN()

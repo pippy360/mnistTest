@@ -6,15 +6,15 @@ import fin_nn as fn
 
 
 def main():
-	lines = loadTheData("test_mixed_numbers_data.csv")
-	line, label = getARandomLine(lines)
-	#print line
-	#line = av.match_arr1
-	print "label :" + str(label)
+	lines = loadTheData("train_mixed_numbers_data.csv")
 	
 	fn.buildTheNN()
-	label = fn.does_it_match(line)
-	print displayValue(line, label)
+	
+	for i in range(100):
+		line, label = getARandomLine(lines)
+		print "label :" + str(label)
+		label = fn.does_it_match(line)
+		print displayValue(line, label)
 
 def loadTheData(path):
 	lines = genfromtxt(path, delimiter=',', skip_header=1, max_rows=100)
@@ -40,7 +40,7 @@ def getARandomLine(lines):
 def displayValue(wholeLineAsArray, label, cols=28):
 	rows = len(wholeLineAsArray)/cols
 	ret = ""
-	tempStr = "TRUE. Match found" if label == 1 else "FALSE. No match found"
+	tempStr = "TRUE. Match found" if label else "FALSE. No match found"
 	ret = ret + tempStr
 	for i in range(rows):
 		for j in range(cols):

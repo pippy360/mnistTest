@@ -16,9 +16,12 @@ training_set = tf.contrib.learn.datasets.base.load_csv(filename=IRIS_TRAINING,
 test_set = tf.contrib.learn.datasets.base.load_csv(filename=IRIS_TEST, 
                                                    target_dtype=np.int)
 g_theNN = None
+path_to_nn = 'theNN.nn'
 
 
 def does_it_match(image1, image2):
+
+	#FIXME: allow the two images to be 2d and also enforce the width/height
 	image1.extend(image2)
 	does_it_match(image1)
 
@@ -35,6 +38,11 @@ def buildAndTestTheNN():
 	testTheNN(theNN)
 	return theNN
 
+def loadNN():
+	classifier = tf.contrib.learn.DNNClassifier(
+                                            feature_columns=feature_columns,
+                                            hidden_units=[10, 20, 10])
+	classifier.restore(path_to_nn)
 
 def testTheNN(theNN):
 	# Evaluate accuracy.
@@ -58,7 +66,7 @@ def buildTheNN():
 	classifier = tf.contrib.learn.DNNClassifier(
                                             feature_columns=feature_columns,
                                             hidden_units=[10, 20, 10])
-
+	classifier.save(path_to_nn)
 	# Fit model.
 	classifier.fit(x=training_set.data, 
                y=training_set.target, 

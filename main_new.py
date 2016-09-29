@@ -9,13 +9,12 @@ def main():
 	lines = loadTheData("test_mixed_numbers_data.csv")
 	line, label = getARandomLine(lines)
 	#print line
-	line = av.match_arr1
+	#line = av.match_arr1
 	print "label :" + str(label)
-	print displayValue(line, label)
 	
 	fn.buildAndTestTheNN()
-	fn.does_it_match(line)
-
+	label = fn.does_it_match(line)
+	print displayValue(line, label)
 
 def loadTheData(path):
 	lines = genfromtxt(path, delimiter=',', skip_header=1, max_rows=100)

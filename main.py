@@ -104,7 +104,7 @@ def isValidInt(value, validInts):
 			return True
 	return False
 
-def mixThem_random(images, labels, validInts, num=9999):
+def mixThem_random(images, labels, validInts, num=100):
 	
 	if len(images) < num:
 		num = len(images)
@@ -114,28 +114,53 @@ def mixThem_random(images, labels, validInts, num=9999):
 
 	for i in range(num):
 
-		idx1 = randint(0,len(validInts)-1)
-		idx1 = validInts[idx1]
-		idx2 = randint(0,len(validInts)-1)
-		idx2 = validInts[idx2]
 		
 		isItTrue = randint(0,1) == 1 
-		
-		if isItTrue:	
-			while not labels[idx1] == labels[idx2]:
-				idx2 = randint(0,len(validInts)-1)
-				idx2 = validInts[idx2]
+		if isItTrue:
+			image1, label1, image2, label2 = getTwoMatchingimages(images, labels, validInts)
+		else:
+			image1, label1, image2, label2 = getTwoNotMatchingimages(images, labels, validInts)
 
-		tempImg = images[idx1][:]
-		tempImg.extend(images[idx2])
+		
+		print "isTrue: "+str(isItTrue)
+		print "label1: "+str(label1)+" : "+str(label2)
+
+		tempImg = image1[:]
+		tempImg.extend(image2)
 		ret_images.append(tempImg)
 
-		if labels[idx1] == labels[idx2]:
-			ret_labels.append(True)
-		else:
-			ret_labels.append(False)
+		ret_labels.append(isItTrue)
 
 	return ret_images, ret_labels		
+
+
+
+def getTwoMatchingimages(images, labels, validInts):
+	idx1 = randint(0,len(images)-1)
+		
+	while not isValidInt(labels[idx1], validInts):
+		idx1 = randint(0,len(images)-1)
+	
+	
+	idx2 = randint(0,len(images)-1)
+	while not isValidInt(labels[idx2], validInts) or labels[idx2] != labels[idx1]:
+		idx2 = randint(0,len(images)-1)
+	
+	return images[idx1], labels[idx1], images[idx2], labels[idx2]
+
+def getTwoNotMatchingimages(images, labels, validInts):
+	idx1 = randint(0,len(images)-1)
+	idx2 = randint(0,len(images)-1)
+		
+	while not isValidInt(labels[idx1], validInts):
+		idx1 = randint(0,len(images)-1)
+
+	while not isValidInt(labels[idx2], validInts):
+		idx2 = randint(0,len(images)-1)
+	
+	return images[idx1], labels[idx1], images[idx2], labels[idx2]
+
+
 
 
 def displayNumOfTrueOrFalse(inputBoolArr):

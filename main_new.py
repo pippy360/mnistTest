@@ -6,11 +6,11 @@ import fin_nn as fn
 
 
 def main():
-	lines = loadTheData("train_mixed_numbers_data.csv")
+	lines = loadTheData("test_mixed_numbers_data.csv")
 	
-	fn.buildTheNN()
+	fn.buildAndTestTheNN()
 	
-	for i in range(100):
+	for i in range(99):
 		line, label = getARandomLine(lines)
 		print "label :" + str(label)
 		label = fn.does_it_match(line)

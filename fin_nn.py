@@ -11,6 +11,7 @@ IRIS_TRAINING = "train_mixed_numbers_data.csv"
 IRIS_TEST = "test_mixed_numbers_data.csv"
 
 # Load datasets.
+
 training_set = tf.contrib.learn.datasets.base.load_csv(filename=IRIS_TRAINING, 
                                                        target_dtype=np.int)
 test_set = tf.contrib.learn.datasets.base.load_csv(filename=IRIS_TEST, 
@@ -28,7 +29,11 @@ def does_it_match(image1, image2):
 def does_it_match(singleSample):
 
 	# Classify two new flower samples.
-	new_samples = np.array(    [singleSample], dtype=float)
+	#new_samples = np.array([singleSample], dtype=float)
+	print('test_set.data')
+	print(test_set.data)
+	
+	new_samples = np.array(singleSample, dtype=float)
 	y = g_theNN.predict(new_samples)
 	print('Predictions: {}'.format(str(y)))
 	return y == 1
@@ -51,7 +56,7 @@ def testTheNN(theNN):
 
 
 
-def buildTheNN(load_from_cache=True):
+def buildTheNN(load_from_cache=False):
 	global g_theNN
 	g_theNN = None
 	if load_from_cache:

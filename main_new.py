@@ -1,18 +1,46 @@
+import numpy as np
 from numpy import genfromtxt
 from random import randint
+import array_vals as av
+import fin_nn as fn
+
 
 def main():
-	filename = "test_mixed_numbers_data.csv"
-	my_data = genfromtxt(filename, delimiter=',', skip_header=1)
-	lineIdx = randint(0,len(my_data)-1)
-	line = my_data[lineIdx]
-	print len(line)
-	print displayValue(line)
+	lines = loadTheData("test_mixed_numbers_data.csv")
+	line, label = getARandomLine(lines)
+	#print line
+	#line = av.match_arr1
+	print "label :" + str(label)
+	
+	fn.buildAndTestTheNN()
+	label = fn.does_it_match(line)
+	print displayValue(line, label)
 
-def displayValue(wholeLineAsArray, cols=28):
+def loadTheData(path):
+	lines = genfromtxt(path, delimiter=',', skip_header=1, max_rows=100)
+	return lines
+
+def getARandomLine(lines):
+	lineIdx = randint(0,len(lines))
+	line = lines[lineIdx]
+	
+	#format it as a list
+	retLine = []	
+	for i in range(len(line)):
+		retLine.append(line[i])
+	line = retLine
+
+	#get the label
+	boolVal = line[-1]
+	line.pop()
+
+	return line, boolVal 
+
+
+def displayValue(wholeLineAsArray, label, cols=28):
 	rows = len(wholeLineAsArray)/cols
-	ret = "\n\n"
-	tempStr = "TRUE. Match found" if wholeLineAsArray[-1] == 1 else "FALSE. No match found"
+	ret = ""
+	tempStr = "TRUE. Match found" if label == 1 else "FALSE. No match found"
 	ret = ret + tempStr
 	for i in range(rows):
 		for j in range(cols):

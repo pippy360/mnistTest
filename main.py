@@ -31,7 +31,7 @@ def start(path='./data'):
 
 
 	org_test_images, org_test_labels = load_wrapper(path, test_img_fname, test_lbl_fname)	
-	org_test_images, org_test_labels = mixThem_random(org_test_images, org_test_labels, validInts=[0,1,2,3,4,5,6,7,8,9])
+	org_test_images, org_test_labels = mixThem_random(org_test_images, org_test_labels, validInts=[5,6,7,8,9])
 	fin_images = packOurNewData(org_test_labels, org_test_images)
 	#print fin_images
 	text_file = open("test_mixed_numbers_data.csv", "w+")

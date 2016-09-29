@@ -16,7 +16,7 @@ training_set = tf.contrib.learn.datasets.base.load_csv(filename=IRIS_TRAINING,
 test_set = tf.contrib.learn.datasets.base.load_csv(filename=IRIS_TEST, 
                                                    target_dtype=np.int)
 g_theNN = None
-path_to_nn = 'theNN.nn'
+path_to_nn = './thenn/'
 
 
 def does_it_match(image1, image2):
@@ -41,8 +41,7 @@ def buildAndTestTheNN():
 def loadNN():
 	classifier = tf.contrib.learn.DNNClassifier(
                                             feature_columns=feature_columns,
-                                            hidden_units=[10, 20, 10],
-						model_dir=path_to_nn)
+                                            hidden_units=[10, 20, 10])
 
 def testTheNN(theNN):
 	# Evaluate accuracy.
@@ -52,15 +51,32 @@ def testTheNN(theNN):
 
 
 
-def buildTheNN():
+def buildTheNN(load_from_cache=True):
+	global g_theNN
+	g_theNN = None
+	if load_from_cache:
+		g_theNN = _buildTheNN_load_from_cache()
+	else:
+		g_theNN = _buildTheNN()
+	return g_theNN
+
+def _buildTheNN_load_from_cache():
+	
+	# Build 3 layer DNN with 10, 20, 10 units respectively.
+	size = len(training_set[0][0])
+	feature_columns = [tf.contrib.layers.real_valued_column("", dimension=size)]
+	classifier = tf.contrib.learn.DNNClassifier(
+                                            feature_columns=feature_columns,
+                                            hidden_units=[10, 20, 10],
+						model_dir=path_to_nn)
+	return classifier
+
+def _buildTheNN():
 
 
 	size = len(training_set[0][0])
 	# Specify that all features have real-value data
 	feature_columns = [tf.contrib.layers.real_valued_column("", dimension=size)]
-
-	print("feature_columns")
-	print(feature_columns)
 
 	# Build 3 layer DNN with 10, 20, 10 units respectively.
 	classifier = tf.contrib.learn.DNNClassifier(
@@ -72,7 +88,5 @@ def buildTheNN():
                y=training_set.target, 
                steps=2000)
 	
-	global g_theNN
-	g_theNN = classifier
 
 	return classifier

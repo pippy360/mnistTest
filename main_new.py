@@ -12,7 +12,7 @@ def main():
 	#line = av.match_arr1
 	print "label :" + str(label)
 	
-	fn.buildAndTestTheNN()
+	fn.buildTheNN()
 	label = fn.does_it_match(line)
 	print displayValue(line, label)
 

@@ -30,10 +30,8 @@ def does_it_match(singleSample):
 
 	# Classify two new flower samples.
 	#new_samples = np.array([singleSample], dtype=float)
-	print('test_set.data')
-	print(test_set.data)
 	
-	new_samples = np.array(singleSample, dtype=float)
+	new_samples = np.array([singleSample,singleSample], dtype=float)
 	y = g_theNN.predict(new_samples)
 	print('Predictions: {}'.format(str(y)))
 	return y == 1
